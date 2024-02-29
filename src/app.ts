@@ -1,10 +1,9 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import { createServer } from "http";
-import { Server } from "socket.io";
-import { initializeSocketIO } from "./socket";
+// import { Server } from "socket.io";
+import cors from "cors";
 import { ApiError } from "./utils/ApiError";
 import dotenv from "dotenv";
 
@@ -16,23 +15,14 @@ export const app = express();
 
 const httpServer = createServer(app);
 
-const io = new Server(httpServer, {
-  pingTimeout: 60000,
-  cors: {
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  },
-});
-
-app.set("io", io);
-
-// global middlewares
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-  })
-);
+// // global middlewares
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN,
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
